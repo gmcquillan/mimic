@@ -102,6 +102,9 @@ class ExpectedMethodCallsError(Error):
     self._expected_methods = expected_methods
 
   def __str__(self):
+    if isinstance(self._expected_methods, str):
+      self._expected_methods = self._expected_methods.split("\n")
+
     calls = "\n".join(["%3d.  %s" % (i, m)
                        for i, m in enumerate(self._expected_methods)])
     return "Verify: Expected methods never called:\n%s" % (calls,)
