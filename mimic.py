@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/env python
 #
 # Copyright 2008 Google Inc.
 #
@@ -81,8 +81,7 @@ class Error(AssertionError):
 
 
 class ExpectedMethodCallsError(Error):
-  """Raised when Verify() is called before all expected methods have been called
-  """
+  """Raised when Verify() is called before all expected methods"""
 
   def __init__(self, expected_methods):
     """Init exception.
