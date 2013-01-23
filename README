@@ -1,24 +1,24 @@
-Mox is an open source mock object framework for Python, inspired by
+Mimic is an open source mock object framework for Python based on Mox, inspired by
 the Java library EasyMock.
 
 To install:
 
   $ python setup.py install
 
-To run Mox's internal tests:
+To run Mimic's internal tests:
 
-  $ python mox_test.py
+  $ python mimic_test.py
 
 Basic usage:
 
   import unittest
-  import mox
+  import mimic
 
-  class PersonTest(mox.MoxTestBase):
+  class PersonTest(mimic.MimicTestBase):
 
-    def testUsingMox(self):
+    def testUsingMimic(self):
       # Create a mock Person
-      mock_person = self.mox.CreateMock(Person)
+      mock_person = self.mimic.CreateMock(Person)
 
       test_person = ...
       test_primary_key = ...
@@ -32,7 +32,7 @@ Basic usage:
       mock_person.DeletePerson(unknown_person).AndRaise(UnknownPersonError())
 
       # Switch from record mode to replay mode
-      self.mox.ReplayAll()
+      self.mimic.ReplayAll()
 
       # Run the test
       ret_pk = mock_person.InsertPerson(test_person)

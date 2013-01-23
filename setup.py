@@ -16,14 +16,14 @@
 
 from distutils.core import setup
 
-setup(name='mox',
-      version='0.5.3',
-      py_modules=['mox', 'stubout'],
+setup(name='mimic',
+      version='0.0.1',
+      py_modules=['mimic', 'stubout'],
       url='http://code.google.com/p/pymox/',
-      maintainer='pymox maintainers',
-      maintainer_email='mox-discuss@googlegroups.com',
+      maintainer='Gavin McQuillan',
+      maintainer_email='gavin dot mcquillan at {gmail.com}',
       license='Apache License, Version 2.0',
       description='Mock object framework',
-      long_description='''Mox is a mock object framework for Python based on the
-Java mock object framework EasyMock.''',
+      long_description='''Mimic is based on Mox, a mock object framework
+for Python based (in turn) on the Java mock object framework EasyMock.''',
       )

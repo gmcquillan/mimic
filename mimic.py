@@ -14,9 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Mox, an object-mocking framework for Python.
+"""Mimic, an object-mocking framework for Python.
 
-Mox works in the record-replay-verify paradigm.  When you first create
+Mimic works in the record-replay-verify paradigm.  When you first create
 a mock object, it is in record mode.  You then programmatically set
 the expected behavior of the mock object (what methods are to be
 called on it, with what parameters, what they should return, and in
@@ -33,32 +33,32 @@ prematurely without calling some cleanup method!)  The verify phase
 ensures that every expected method was called; otherwise, an exception
 will be raised.
 
-WARNING! Mock objects created by Mox are not thread-safe.  If you are
+WARNING! Mock objects created by Mimic are not thread-safe.  If you are
 call a mock in multiple threads, it should be guarded by a mutex.
 
 TODO(stevepm): Add the option to make mocks thread-safe!
 
 Suggested usage / workflow:
 
-  # Create Mox factory
-  my_mox = Mox()
+  # Create Mimic factory
+  my_mimic = Mimic()
 
   # Create a mock data access object
-  mock_dao = my_mox.CreateMock(DAOClass)
+  mock_dao = my_mimic.CreateMock(DAOClass)
 
   # Set up expected behavior
   mock_dao.RetrievePersonWithIdentifier('1').AndReturn(person)
   mock_dao.DeletePerson(person)
 
   # Put mocks in replay mode
-  my_mox.ReplayAll()
+  my_mimic.ReplayAll()
 
   # Inject mock object and run test
   controller.SetDao(mock_dao)
   controller.DeletePersonById('1')
 
   # Verify all methods were called as expected
-  my_mox.VerifyAll()
+  my_mimic.VerifyAll()
 """
 
 try:
@@ -252,8 +252,8 @@ class SwallowedExceptionError(Error):
     return "Previous exceptions thrown:\n%s" % (exceptions,)
 
 
-class Mox(object):
-  """Mox: a factory for creating mock objects."""
+class Mimic(object):
+  """Mimic: a factory for creating mock objects."""
 
   # A list of types that should be stubbed out with MockObjects (as
   # opposed to MockAnythings).
@@ -268,7 +268,7 @@ class Mox(object):
     _USE_MOCK_FACTORY.append(abc.ABCMeta)
 
   def __init__(self):
-    """Initialize a new Mox."""
+    """Initialize a new Mimic."""
 
     self._mock_objects = []
     self.stubs = stubout.StubOutForTesting()
@@ -359,7 +359,7 @@ class Mox(object):
     dependencies.  Previously some boilder plate was necessary to
     create a mock that would act as a factory.  Using
     StubOutClassWithMocks, once you've stubbed out the class you may
-    use the stubbed class as you would any other mock created by mox:
+    use the stubbed class as you would any other mock created by mimic:
     during the record phase, new mock instances will be created, and
     during replay, the recorded mocks will be returned.
 
@@ -367,28 +367,28 @@ class Mox(object):
 
     # Example using StubOutWithMock (the old, clunky way):
 
-    mock1 = mox.CreateMock(my_import.FooClass)
-    mock2 = mox.CreateMock(my_import.FooClass)
-    foo_factory = mox.StubOutWithMock(my_import, 'FooClass',
+    mock1 = mimic.CreateMock(my_import.FooClass)
+    mock2 = mimic.CreateMock(my_import.FooClass)
+    foo_factory = mimic.StubOutWithMock(my_import, 'FooClass',
                                       use_mock_anything=True)
     foo_factory(1, 2).AndReturn(mock1)
     foo_factory(9, 10).AndReturn(mock2)
-    mox.ReplayAll()
+    mimic.ReplayAll()
 
     my_import.FooClass(1, 2)   # Returns mock1 again.
     my_import.FooClass(9, 10)  # Returns mock2 again.
-    mox.VerifyAll()
+    mimic.VerifyAll()
 
     # Example using StubOutClassWithMocks:
 
-    mox.StubOutClassWithMocks(my_import, 'FooClass')
+    mimic.StubOutClassWithMocks(my_import, 'FooClass')
     mock1 = my_import.FooClass(1, 2)   # Returns a new mock of FooClass
     mock2 = my_import.FooClass(9, 10)  # Returns another mock instance
-    mox.ReplayAll()
+    mimic.ReplayAll()
 
     my_import.FooClass(1, 2)   # Returns mock1 again.
     my_import.FooClass(9, 10)  # Returns mock2 again.
-    mox.VerifyAll()
+    mimic.VerifyAll()
     """
     attr_to_replace = getattr(obj, attr_name)
     attr_type = type(attr_to_replace)
@@ -847,9 +847,9 @@ class _MockObjectFactory(MockObject):
   See StubOutWithMock vs StubOutClassWithMocks for more detail.
   """
 
-  def __init__(self, class_to_mock, mox_instance):
+  def __init__(self, class_to_mock, mimic_instance):
     MockObject.__init__(self, class_to_mock)
-    self._mox = mox_instance
+    self._mimic = mimic_instance
     self._instance_queue = deque()
 
   def __call__(self, *params, **named_params):
@@ -873,7 +873,7 @@ class _MockObjectFactory(MockObject):
     else:
       mock_method(*params, **named_params)
 
-      instance = self._mox.CreateMock(self._class_to_mock)
+      instance = self._mimic.CreateMock(self._class_to_mock)
       self._instance_queue.appendleft(instance)
       return instance
 
@@ -1292,7 +1292,7 @@ class MockMethod(object):
     return self
 
 class Comparator:
-  """Base class for all Mox comparators.
+  """Base class for all Mimic comparators.
 
   A Comparator can be used as a parameter to a mocked method when the exact
   value is not known.  For example, the code you are testing might build up a
@@ -1394,7 +1394,7 @@ class IsA(Comparator):
       return type(clazz) == type(self._class_name)
 
   def __repr__(self):
-    return 'mox.IsA(%s) ' % str(self._class_name)
+    return 'mimic.IsA(%s) ' % str(self._class_name)
 
 
 class IsAlmost(Comparator):
@@ -1681,7 +1681,7 @@ class SameElementsAs(Comparator):
     except TypeError:
       # actual_seq cannot be read as a sequence.
       #
-      # This happens because Mox uses __eq__ both to check object equality (in
+      # This happens because Mimic uses __eq__ both to check object equality (in
       # MethodSignatureChecker) and to invoke Comparators.
       return False
 
@@ -1741,7 +1741,7 @@ class Or(Comparator):
     """Initialize.
 
     Args:
-      *args: One or more Mox comparators
+      *args: One or more Mimic comparators
     """
 
     self._comparators = args
@@ -2052,22 +2052,22 @@ class MultipleTimesGroup(MethodGroup):
     return len(self._methods_left) == 0
 
 
-class MoxMetaTestBase(type):
-  """Metaclass to add mox cleanup and verification to every test.
+class MimicMetaTestBase(type):
+  """Metaclass to add mimic cleanup and verification to every test.
 
-  As the mox unit testing class is being constructed (MoxTestBase or a
+  As the mimic unit testing class is being constructed (MimicTestBase or a
   subclass), this metaclass will modify all test functions to call the
-  CleanUpMox method of the test class after they finish. This means that
+  CleanUpMimic method of the test class after they finish. This means that
   unstubbing and verifying will happen for every test with no additional code,
   and any failures will result in test failures as opposed to errors.
   """
 
   def __init__(cls, name, bases, d):
-    super(MoxMetaTestBase, cls).__init__(name, bases, d)
+    super(MimicMetaTestBase, cls).__init__(name, bases, d)
     type.__init__(cls, name, bases, d)
 
     # also get all the attributes from the base classes to account
-    # for a case when test class is not the immediate child of MoxTestBase
+    # for a case when test class is not the immediate child of MimicTestBase
     for base in bases:
       for attr_name in dir(base):
         if attr_name not in d:
@@ -2079,60 +2079,60 @@ class MoxMetaTestBase(type):
 
     for func_name, func in d.items():
       if func_name.startswith('test') and callable(func):
-        setattr(cls, func_name, MoxMetaTestBase.CleanUpTest(cls, func))
+        setattr(cls, func_name, MimicMetaTestBase.CleanUpTest(cls, func))
 
   @staticmethod
   def CleanUpTest(cls, func):
-    """Adds Mox cleanup code to any MoxTestBase method.
+    """Adds Mimic cleanup code to any MimicTestBase method.
 
     Always unsets stubs after a test. Will verify all mocks for tests that
     otherwise pass.
 
     Args:
-      cls: MoxTestBase or subclass; the class whose test method we are altering.
-      func: method; the method of the MoxTestBase test class we wish to alter.
+      cls: MimicTestBase or subclass; the class whose test method we are altering.
+      func: method; the method of the MimicTestBase test class we wish to alter.
 
     Returns:
       The modified method.
     """
     def new_method(self, *args, **kwargs):
-      mox_obj = getattr(self, 'mox', None)
+      mimic_obj = getattr(self, 'mimic', None)
       stubout_obj = getattr(self, 'stubs', None)
-      cleanup_mox = False
+      cleanup_mimic = False
       cleanup_stubout = False
-      if mox_obj and isinstance(mox_obj, Mox):
-        cleanup_mox = True
+      if mimic_obj and isinstance(mimic_obj, Mimic):
+        cleanup_mimic = True
       if stubout_obj and isinstance(stubout_obj, stubout.StubOutForTesting):
         cleanup_stubout = True
       try:
         func(self, *args, **kwargs)
       finally:
-        if cleanup_mox:
-          mox_obj.UnsetStubs()
+        if cleanup_mimic:
+          mimic_obj.UnsetStubs()
         if cleanup_stubout:
           stubout_obj.UnsetAll()
           stubout_obj.SmartUnsetAll()
-      if cleanup_mox:
-        mox_obj.VerifyAll()
+      if cleanup_mimic:
+        mimic_obj.VerifyAll()
     new_method.__name__ = func.__name__
     new_method.__doc__ = func.__doc__
     new_method.__module__ = func.__module__
     return new_method
 
 
-class MoxTestBase(unittest.TestCase):
+class MimicTestBase(unittest.TestCase):
   """Convenience test class to make stubbing easier.
 
-  Sets up a "mox" attribute which is an instance of Mox (any mox tests will
+  Sets up a "mimic" attribute which is an instance of Mimic (any mimic tests will
   want this), and a "stubs" attribute that is an instance of StubOutForTesting
   (needed at times). Also automatically unsets any stubs and verifies that all
   mock methods have been called at the end of each test, eliminating boilerplate
   code.
   """
 
-  __metaclass__ = MoxMetaTestBase
+  __metaclass__ = MimicMetaTestBase
 
   def setUp(self):
-    super(MoxTestBase, self).setUp()
-    self.mox = Mox()
+    super(MimicTestBase, self).setUp()
+    self.mimic = Mimic()
     self.stubs = stubout.StubOutForTesting()

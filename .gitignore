@@ -3,3 +3,10 @@
 /MANIFEST
 /build
 /dist
+
+# Virtualenv dirs.
+/bin
+/include
+/lib
+/local
+*.pyc

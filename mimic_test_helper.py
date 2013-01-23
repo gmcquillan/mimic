@@ -14,23 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""A very basic test class derived from mox.MoxTestBase, used by mox_test.py.
+"""A very basic test class derived from mimic.MimicTestBase, used by mimic_test.py.
 
 The class defined in this module is used to test the features of
-MoxTestBase and is not intended to be a standalone test.  It needs to
+MimicTestBase and is not intended to be a standalone test.  It needs to
 be in a separate module, because otherwise the tests in this class
 (which should not all pass) would be executed as part of the
-mox_test.py test suite.
+mimic_test.py test suite.
 
-See mox_test.MoxTestBaseTest for how this class is actually used.
+See mimic_test.MimicTestBaseTest for how this class is actually used.
 """
 
 import os
 
-import mox
+import mimic
 
-class ExampleMoxTestMixin(object):
-  """Mix-in class for mox test case class.
+class ExampleMimicTestMixin(object):
+  """Mix-in class for mimic test case class.
 
   It stubs out the same function as one of the test methods in
   the example test case.  Both tests must pass as meta class wraps
@@ -38,31 +38,31 @@ class ExampleMoxTestMixin(object):
   """
 
   def testStat(self):
-    self.mox.StubOutWithMock(os, 'stat')
+    self.mimic.StubOutWithMock(os, 'stat')
     os.stat(self.DIR_PATH)
-    self.mox.ReplayAll()
+    self.mimic.ReplayAll()
     os.stat(self.DIR_PATH)
 
 
-class ExampleMoxTest(mox.MoxTestBase, ExampleMoxTestMixin):
+class ExampleMimicTest(mimic.MimicTestBase, ExampleMimicTestMixin):
 
   DIR_PATH = '/path/to/some/directory'
 
   def testSuccess(self):
-    self.mox.StubOutWithMock(os, 'listdir')
+    self.mimic.StubOutWithMock(os, 'listdir')
     os.listdir(self.DIR_PATH)
-    self.mox.ReplayAll()
+    self.mimic.ReplayAll()
     os.listdir(self.DIR_PATH)
 
   def testExpectedNotCalled(self):
-    self.mox.StubOutWithMock(os, 'listdir')
+    self.mimic.StubOutWithMock(os, 'listdir')
     os.listdir(self.DIR_PATH)
-    self.mox.ReplayAll()
+    self.mimic.ReplayAll()
 
   def testUnexpectedCall(self):
-    self.mox.StubOutWithMock(os, 'listdir')
+    self.mimic.StubOutWithMock(os, 'listdir')
     os.listdir(self.DIR_PATH)
-    self.mox.ReplayAll()
+    self.mimic.ReplayAll()
     os.listdir('/path/to/some/other/directory')
     os.listdir(self.DIR_PATH)
 
@@ -70,9 +70,9 @@ class ExampleMoxTest(mox.MoxTestBase, ExampleMoxTestMixin):
     self.assertTrue(False)
 
   def testStatOther(self):
-    self.mox.StubOutWithMock(os, 'stat')
+    self.mimic.StubOutWithMock(os, 'stat')
     os.stat(self.DIR_PATH)
-    self.mox.ReplayAll()
+    self.mimic.ReplayAll()
     os.stat(self.DIR_PATH)
 
   def testHasStubs(self):

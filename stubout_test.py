@@ -16,31 +16,31 @@
 
 import unittest
 
-import mox
+import mimic
 import stubout
 import stubout_testee
 
 
 class StubOutForTestingTest(unittest.TestCase):
   def setUp(self):
-    self.mox = mox.Mox()
+    self.mimic = mimic.Mimic()
     self.sample_function_backup = stubout_testee.SampleFunction
 
   def tearDown(self):
     stubout_testee.SampleFunction = self.sample_function_backup
 
   def testSmartSetOnModule(self):
-    mock_function = self.mox.CreateMockAnything()
+    mock_function = self.mimic.CreateMockAnything()
     mock_function()
 
     stubber = stubout.StubOutForTesting()
     stubber.SmartSet(stubout_testee, 'SampleFunction', mock_function)
 
-    self.mox.ReplayAll()
+    self.mimic.ReplayAll()
 
     stubout_testee.SampleFunction()
 
-    self.mox.VerifyAll()
+    self.mimic.VerifyAll()
 
 
 if __name__ == '__main__':
