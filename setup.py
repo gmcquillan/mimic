@@ -17,7 +17,7 @@
 from distutils.core import setup
 
 setup(name='mimic',
-      version='0.0.1',
+      version='0.0.2',
       py_modules=['mimic', 'stubout'],
       url='http://code.google.com/p/pymox/',
       maintainer='Gavin McQuillan',
