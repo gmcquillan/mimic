@@ -276,6 +276,9 @@ class Mimic(object):
     self.stubs = stubout.StubOutForTesting()
 
   def CreateMock(self, class_to_mock, attrs=None):
+    return self.create_mock(class_to_mock, attrs)
+
+  def create_mock(self, class_to_mock, attrs=None):
     """Create a new mock object.
 
     Args:
@@ -294,6 +297,9 @@ class Mimic(object):
     return new_mock
 
   def CreateMockAnything(self, description=None):
+    return self.create_mock_anything(description)
+
+  def create_mock_anything(self, description=None):
     """Create a mock that will accept any method calls.
 
     This does not enforce an interface.
@@ -307,25 +313,36 @@ class Mimic(object):
     return new_mock
 
   def ReplayAll(self):
+    self.replay_all()
+
+  def replay_all(self):
     """Set all mock objects to replay mode."""
 
     for mock_obj in self._mock_objects:
       mock_obj._Replay()
 
-
   def VerifyAll(self):
+    self.verify_all()
+
+  def verify_all(self):
     """Call verify on all mock objects created."""
 
     for mock_obj in self._mock_objects:
       mock_obj._Verify()
 
   def ResetAll(self):
+    self.reset_all()
+
+  def reset_all(self):
     """Call reset on all mock objects.  This does not unset stubs."""
 
     for mock_obj in self._mock_objects:
       mock_obj._Reset()
 
   def StubOutWithMock(self, obj, attr_name, use_mock_anything=False):
+    self.stub_out_with_mock(obj, attr_name, use_mock_anything)
+
+  def stub_out_with_mock(self, obj, attr_name, use_mock_anything=False):
     """Replace a method, attribute, etc. with a Mock.
 
     This will replace a class or module with a MockObject, and everything else
@@ -355,6 +372,9 @@ class Mimic(object):
     self.stubs.Set(obj, attr_name, stub)
 
   def StubOutClassWithMocks(self, obj, attr_name):
+    self.stub_out_class_with_mocks(obj, attr_name)
+
+  def stub_out_class_with_mocks(self, obj, attr_name):
     """Replace a class with a "mock factory" that will create mock objects.
 
     This is useful if the code-under-test directly instantiates
@@ -407,11 +427,19 @@ class Mimic(object):
     self.stubs.Set(obj, attr_name, factory)
 
   def UnsetStubs(self):
+    self.unset_stubs()
+
+  def unset_stubs(self):
     """Restore stubs to their original state."""
 
     self.stubs.UnsetAll()
 
+
 def Replay(*args):
+    replay(*args)
+
+
+def replay(*args):
   """Put mocks into Replay mode.
 
   Args:
@@ -423,6 +451,10 @@ def Replay(*args):
 
 
 def Verify(*args):
+    verify(*args)
+
+
+def verify(*args):
   """Verify mocks.
 
   Args:
@@ -434,6 +466,10 @@ def Verify(*args):
 
 
 def Reset(*args):
+    reset(*args)
+
+
+def reset(*args):
   """Reset mocks.
 
   Args:
@@ -938,6 +974,9 @@ class MethodSignatureChecker(object):
     arg_status[arg_name] = MethodSignatureChecker._GIVEN
 
   def Check(self, params, named_params):
+    self.check(params, named_params)
+
+  def check(self, params, named_params):
     """Ensures that the parameters used while recording a call are valid.
 
     Args:
@@ -1188,6 +1227,9 @@ class MockMethod(object):
     return not self == rhs
 
   def GetPossibleGroup(self):
+    return self.get_possible_group()
+
+  def get_possible_group(self):
     """Returns a possible group from the end of the call queue or None if no
     other methods are on the stack.
     """
@@ -1229,6 +1271,9 @@ class MockMethod(object):
     return self
 
   def InAnyOrder(self, group_name="default"):
+    return self.in_any_order(group_name)
+
+  def in_any_order(self, group_name="default"):
     """Move this method into a group of unordered calls.
 
     A group of unordered calls must be defined together, and must be executed
@@ -1247,6 +1292,9 @@ class MockMethod(object):
     return self._CheckAndCreateNewGroup(group_name, UnorderedGroup)
 
   def MultipleTimes(self, group_name="default"):
+    return self.multiple_times(group_name)
+
+  def multiple_times(self, group_name="default"):
     """Move this method into group of calls which may be called multiple times.
 
     A group of repeating calls must be defined together, and must be executed in
@@ -1261,6 +1309,9 @@ class MockMethod(object):
     return self._CheckAndCreateNewGroup(group_name, MultipleTimesGroup)
 
   def AndReturn(self, return_value):
+    return self.and_return(return_value)
+
+  def and_return(self, return_value):
     """Set the value to return when this method is called.
 
     Args:
@@ -1271,6 +1322,9 @@ class MockMethod(object):
     return return_value
 
   def AndRaise(self, exception):
+    self.and_raise(exception)
+
+  def and_raise(self, exception):
     """Set the exception to raise when this method is called.
 
     Args:
@@ -1281,6 +1335,9 @@ class MockMethod(object):
     self._exception = exception
 
   def WithSideEffects(self, side_effects):
+    return self.with_side_effects(side_effects)
+
+  def with_side_effects(self, side_effects):
     """Set the side effects that are simulated when this method is called.
 
     Args:
@@ -1916,12 +1973,21 @@ class MethodGroup(object):
     return '<%s "%s">' % (self.__class__.__name__, self._group_name)
 
   def AddMethod(self, mock_method):
+    self.add_method(mock_method)
+
+  def add_method(self, mock_method):
     raise NotImplementedError
 
   def MethodCalled(self, mock_method):
+    self.method_called(mock_method)
+
+  def method_called(self, mock_method):
     raise NotImplementedError
 
   def IsSatisfied(self):
+    self.is_satisfied()
+
+  def is_satisfied(self):
     raise NotImplementedError
 
 class UnorderedGroup(MethodGroup):
@@ -1942,6 +2008,9 @@ class UnorderedGroup(MethodGroup):
         "\n".join(str(method) for method in self._methods))
 
   def AddMethod(self, mock_method):
+    self.add_method(mock_method)
+
+  def add_method(self, mock_method):
     """Add a method to this group.
 
     Args:
@@ -1951,6 +2020,9 @@ class UnorderedGroup(MethodGroup):
     self._methods.append(mock_method)
 
   def MethodCalled(self, mock_method):
+    return self.method_called(mock_method)
+
+  def method_called(self, mock_method):
     """Remove a method call from the group.
 
     If the method is not in the set, an UnexpectedMethodCallError will be
@@ -1987,6 +2059,9 @@ class UnorderedGroup(MethodGroup):
     raise exception
 
   def IsSatisfied(self):
+    return self.is_satisfied()
+
+  def is_satisfied(self):
     """Return True if there are not any methods in this group."""
 
     return len(self._methods) == 0
@@ -2006,6 +2081,9 @@ class MultipleTimesGroup(MethodGroup):
     self._methods_left = set()
 
   def AddMethod(self, mock_method):
+    self.add_method(mock_method)
+
+  def add_method(self, mock_method):
     """Add a method to this group.
 
     Args:
@@ -2016,6 +2094,9 @@ class MultipleTimesGroup(MethodGroup):
     self._methods_left.add(mock_method)
 
   def MethodCalled(self, mock_method):
+    return self.method_called(mock_method)
+
+  def method_called(self, mock_method):
     """Remove a method call from the group.
 
     If the method is not in the set, an UnexpectedMethodCallError will be
@@ -2050,6 +2131,9 @@ class MultipleTimesGroup(MethodGroup):
       raise exception
 
   def IsSatisfied(self):
+    return self.is_satisfied()
+
+  def is_satisfied(self):
     """Return True if all methods in this group are called at least once."""
     return len(self._methods_left) == 0
 
