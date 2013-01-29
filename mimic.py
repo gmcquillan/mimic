@@ -73,6 +73,7 @@ import types
 import unittest
 
 import stubout
+import six
 
 class Error(AssertionError):
   """Base exception for this module."""
@@ -224,7 +225,7 @@ class UnexpectedMockCreationError(Error):
 
     if self._named_params:
       error += ", " + ", ".join(["%s=%s" % (k, v) for k, v in
-                                 self._named_params.iteritems()])
+                                 six.iteritems(self._named_params)])
 
     error += ")"
     return error
@@ -259,13 +260,13 @@ class Mimic(object):
 
   # A list of types that should be stubbed out with MockObjects (as
   # opposed to MockAnythings).
-  _USE_MOCK_OBJECT = [types.ClassType, types.FunctionType, types.InstanceType,
-                      types.ModuleType, types.ObjectType, types.TypeType,
+  _USE_MOCK_OBJECT = [types.FunctionType, types.InstanceType,
+                      types.ModuleType, object, type,
                       types.MethodType, types.UnboundMethodType,
                       ]
 
   # A list of types that may be stubbed out with a MockObjectFactory.
-  _USE_MOCK_FACTORY = [types.ClassType, types.ObjectType, types.TypeType]
+  _USE_MOCK_FACTORY = [type, object]
   if abc:
     _USE_MOCK_FACTORY.append(abc.ABCMeta)
 
@@ -925,7 +926,7 @@ class _MockObjectFactory(MockObject):
 class MethodSignatureChecker(object):
   """Ensures that methods are called correctly."""
 
-  _NEEDED, _DEFAULT, _GIVEN = range(3)
+  _NEEDED, _DEFAULT, _GIVEN = list(range(3))
 
   def __init__(self, method):
     """Creates a checker.
@@ -1047,7 +1048,7 @@ class MethodSignatureChecker(object):
       self._RecordArgumentGiven(arg_name, arg_status)
 
     # Ensure all the required arguments have been given.
-    still_needed = [k for k, v in arg_status.iteritems()
+    still_needed = [k for k, v in six.iteritems(arg_status)
                     if v == MethodSignatureChecker._NEEDED]
     if still_needed:
       raise AttributeError('No values given for arguments: %s'
@@ -1380,7 +1381,7 @@ class Comparator:
       rhs: any python object
     """
 
-    raise NotImplementedError, 'method must be implemented by a subclass.'
+    raise NotImplementedError('method must be implemented by a subclass.')
 
   def __eq__(self, rhs):
     return self.equals(rhs)

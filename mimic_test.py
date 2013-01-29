@@ -1,3 +1,4 @@
+from __future__ import print_function
 #!/usr/bin/env python
 #
 # Unit tests for Mimic.
@@ -1930,7 +1931,7 @@ class MimicTest(unittest.TestCase):
       self.assertEquals('mock bar', actual_foo_bar)
       self.assertEquals('called mock', actual_spam)
   except ImportError:
-    print >>sys.stderr, "testStubOutClass_ABCMeta. ... Skipped - no abc module"
+    print("testStubOutClass_ABCMeta. ... Skipped - no abc module", file=sys.stderr)
 
   def testStubOutClass_NotAClass(self):
     self.assertRaises(TypeError, self.mimic.StubOutClassWithMocks,
@@ -2044,7 +2045,7 @@ class MimicTest(unittest.TestCase):
     # Forgot to replay!
     try:
       foo.GetBar().ShowMeTheMoney()
-    except AttributeError, e:
+    except AttributeError as e:
       self.assertEquals('MockMethod has no attribute "ShowMeTheMoney". '
           'Did you remember to put your mocks in replay mode?', str(e))
 
