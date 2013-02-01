@@ -27,6 +27,8 @@ See mimic_test.MimicTestBaseTest for how this class is actually used.
 
 import os
 
+from six import with_metaclass
+
 import mimic
 
 class ExampleMimicTestMixin(object):
@@ -121,8 +123,8 @@ class CallableClass(object):
 try:
   import abc
 
-  class MyDictABC(object):
-    __metaclass__ = abc.ABCMeta
+  class MyDictABC(with_metaclass(abc.ABCMeta)):
+    pass
 
   MyDictABC.register(dict)
 

@@ -9,4 +9,7 @@
 /include
 /lib
 /local
+/share
 *.pyc
+*.swo
+*.swp

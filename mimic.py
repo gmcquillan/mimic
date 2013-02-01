@@ -260,10 +260,13 @@ class Mimic(object):
 
   # A list of types that should be stubbed out with MockObjects (as
   # opposed to MockAnythings).
-  _USE_MOCK_OBJECT = [types.FunctionType, types.InstanceType,
+  _USE_MOCK_OBJECT = [types.FunctionType,
                       types.ModuleType, object, type,
-                      types.MethodType, types.UnboundMethodType,
+                      types.MethodType, 
                       ]
+
+  if not six.PY3:
+    _USE_MOCK_OBJECT.extend([types.InstanceType, types.UnboundMethodType,])
 
   # A list of types that may be stubbed out with a MockObjectFactory.
   _USE_MOCK_FACTORY = [type, object]

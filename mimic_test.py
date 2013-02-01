@@ -17,10 +17,12 @@ from __future__ import print_function
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import cStringIO
 import unittest
 import re
+import six
 import sys
+
+from six import StringIO
 
 import mimic
 
@@ -308,12 +310,19 @@ class RegexTest(unittest.TestCase):
 
   def testReprWithoutFlags(self):
     """repr should return the regular expression pattern."""
-    self.assert_(repr(mimic.Regex(r"a\s+b")) == "<regular expression 'a\s+b'>")
+    regex_repr = repr(mimic.Regex(r"a\s+b"))
+    if six.PY3:
+      self.assert_(regex_repr == "<regular expression 'a\\s+b', flags=32>")
+    else:
+      self.assert_(regex_repr == "<regular expression 'a\s+b'>")
 
   def testReprWithFlags(self):
     """repr should return the regular expression pattern and flags."""
-    self.assert_(repr(mimic.Regex(r"a\s+b", flags=4)) ==
-                 "<regular expression 'a\s+b', flags=4>")
+    regex_repr = repr(mimic.Regex(r"a\s+b", flags=4))
+    if six.PY3:
+      self.assert_(regex_repr == "<regular expression 'a\\s+b', flags=36>")
+    else:
+      self.assert_(regex_repr == "<regular expression 'a\s+b', flags=4>")
 
 
 class IsTest(unittest.TestCase):
@@ -395,8 +404,8 @@ class IsATest(unittest.TestCase):
 
   def testSpecialTypes(self):
     """Verify that IsA can handle objects like cStringIO.StringIO."""
-    isA = mimic.IsA(cStringIO.StringIO())
-    stringIO = cStringIO.StringIO()
+    isA = mimic.IsA(StringIO())
+    stringIO = StringIO()
     self.assert_(isA == stringIO)
 
 
@@ -2025,7 +2034,10 @@ class MimicTest(unittest.TestCase):
 
     foo = Foo()
     self.mimic.StubOutWithMock(foo, "obj")
-    self.assert_(isinstance(foo.obj, mimic.MockObject))
+    if six.PY3:
+      self.assert_(isinstance(foo.obj, mimic.MockAnything))
+    else:
+      self.assert_(isinstance(foo.obj, mimic.MockObject))
     foo.obj.ValidCall()
     self.mimic.ReplayAll()
 
