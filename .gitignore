@@ -9,4 +9,5 @@
 /include
 /lib
 /local
+/docs/_build
 *.pyc
