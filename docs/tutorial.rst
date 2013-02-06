@@ -41,20 +41,71 @@ In many examples, you might see a situation like this:
     mime = Mimic()
 
 Often this will happen in a test classes ``SetUp`` function. But! you can save
-yourself the trouble by having your test class inherit from ``mimic.MimccTestBase``!
+yourself the trouble by having your test class inherit from ``mimic.MimicTestBase``!
 
 When you do this, you get a ``self.mimic`` instance for free. However, that's
 not the only reason to do so. The other advantage is that the "Unsetting stubs"
 step will be done automatically at the end of each test_functon (more on this later);
 together this step saves a lot of boiler plate.
 
+
 Mocking Out Objects
 ^^^^^^^^^^^^^^^^^^^
 
+Mocking Out A Function Call
+"""""""""""""""""""""""""""
+
+A vast majority of mocking can just be done by calling ``stub_out_with_mock``,
+this is good for situations in which you just need to override a particular
+function call so it doesn't interact with an external system (database), and/or
+you need to control the return values that the function returns.
+
+.. sourcecode:: python
+
+    # Now assuming that your test classes inherit from MimicTestBase
+    self.mimic.stub_out_with_mock(my_module, 'my_func')
+    my_module.my_func(mimic.ignore_arg()).and_return('Completed')
+
+Mocking Out An Object
+"""""""""""""""""""""""
+
+In situations where you need to access attributes and call functions on an object
+
+.. sourcecode:: python
+
+    my_module =  self.mimic.create_mock_anything()
+    my_module.my_func(mimic.ignore_arg()).and_return('Completed')
+
+Mocking Out A Class
+"""""""""""""""""""
+
+In other situations you need to mock out the creation of an instance within the
+code that's being tested. In those cases use ``stub_out_class_with_mocks``.
+
+See :ref:`stubbing_out_a_class`
 
 Replaying Mock Objects
 ^^^^^^^^^^^^^^^^^^^^^^
 
+After setting expectations, we trigger ``replay mode`` which means that we can
+make our calls for testing now.
 
-Unsetting Stubs
-^^^^^^^^^^^^^^^
+.. sourcecode:: python
+
+    # Set expectations
+    self.mimic.replay_all()
+    # Call your code
+    # Make your assertions
+    self.assertTrue(my_func())
+
+Unsetting Stubs/Verification
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+After all the mocks have played out (successfully hopefully!) we need to let Mimic
+know that it's time to count all the calls and arguments that we setup in our 
+expectations.
+
+.. sourcecode:: python
+
+    self.mimic.verify_all()
+
