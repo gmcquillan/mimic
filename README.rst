@@ -1,15 +1,27 @@
+======
+Mimic
+======
+
 Mimic is an open source mock object framework for Python based on Mox, inspired by
 the Java library EasyMock.
 
-To install:
+Installation
+^^^^^^^^^^^^
+
+.. sourcecode:: bash
 
   $ python setup.py install
 
 To run Mimic's internal tests:
 
+.. sourcecode:: bash
+
   $ python mimic_test.py
 
-Basic usage:
+Basic Usage
+^^^^^^^^^^^
+
+.. sourcecode:: python
 
   import unittest
   import mimic
@@ -39,18 +51,26 @@ Basic usage:
       self.assertEquals(test_primary_key, ret_pk)
       self.assertRaises(UnknownPersonError, mock_person, unknown_person)
 
+
+Documentation and Links
+^^^^^^^^^^^^^^^^^^^^^^^
+
 For more documentation, see:
 
-  http://code.google.com/p/pymox/wiki/MoxDocumentation
+    https://mimic.readthedocs.org/en/latest/
 
 For more information, see:
 
-  http://code.google.com/p/pymox/
+    https://github.com/gmcquillan/mimic
 
-Our user and developer discussion group is:
+To see information about the project that Mimic is forked from, see:
+
+    http://code.google.com/p/pymox/
+
+The Mox user and developer discussion group is:
 
   http://groups.google.com/group/mox-discuss
 
-Mox is Copyright 2008 Google Inc, and licensed under the Apache
+Mox/Mimic is Copyright 2008 Google Inc, and licensed under the Apache
 License, Version 2.0; see the file COPYING for details.  If you would
-like to help us improve Mox, join the group.
+like to help us improve Mox/Mimic, join the group.
