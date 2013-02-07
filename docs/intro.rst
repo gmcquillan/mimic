@@ -14,6 +14,24 @@ Mimic allows you to write true unit tests even in situations in which your code 
 dependent on external systems, in situations in which dependency injection
 won't work, or would otherwise be too complicated.
 
+Mimic Test Philosophy
+^^^^^^^^^^^^^^^^^^^^^
+
+Mimic is a bit more complex than many other mocking libraries. This is a strength
+and a weakness. The way Mimic tests are meant to be run is in the following order:
+
+- specify expectations
+- enter replay mode
+
+So the first part of your test ends up being about setting up the scenario for
+mimic, and then the second part -- after you enter replay mode -- is about calling
+the code you hope to test from you test function. 
+
+This two-step process is a little extra work from the onset, but it's a hidden
+strength when you realize that Mimic holds you to the expectations you set: 
+if you don't call a method you mock out, you get an error; if you call a method
+you weren't expecting, you get an error. It has a kind of symmetry that many developers
+find easy to trust because of its explicitness.
 
 Why fork?
 ^^^^^^^^^

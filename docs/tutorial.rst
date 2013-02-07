@@ -109,3 +109,6 @@ expectations.
 
     self.mimic.verify_all()
 
+.. note:: This isn't necessary if you're inheriting from ``mimic.MimicTestBase``!
+    self.mimic.verify_all() will be called for you in that case!
+

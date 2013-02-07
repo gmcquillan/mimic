@@ -7,55 +7,55 @@ Variable Parameters to Mock Functions
 -------------------------------------
 
 
-Mimic.IgnoreArg()
+IgnoreArg()
 ^^^^^^^^^^^^^^^^^
 
 
-Mimic.And()
+And()
 ^^^^^^^^^^^
 
 
-Mimic.Or()
+Or()
 ^^^^^^^^^^
 
 
-Mimic.Is()
+Is()
 ^^^^^^^^^^
 
 
-Mimic.IsA()
+IsA()
 ^^^^^^^^^^^
 
 
-Mimic.IsAlmost()
+IsAlmost()
 ^^^^^^^^^^^^^^^^
 
 
-Mimic.StringContains()
+StringContains()
 ^^^^^^^^^^^^^^^^^^^^^^
 
 
-Mimic.Regex()
+Regex()
 ^^^^^^^^^^^^^
 
 
-Mimic.In()
+In()
 ^^^^^^^^^^
 
 
-Mimic.Not()
+Not()
 ^^^^^^^^^^^
 
 
-Mimic.ContainsKeyValue()
+ContainsKeyValue()
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-Mimic.ContainsAttributeValue()
+ContainsAttributeValue()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-Mimic.SameElementAs()
+SameElementAs()
 ^^^^^^^^^^^^^^^^^^^^^
 
 
