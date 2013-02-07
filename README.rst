@@ -57,19 +57,19 @@ Documentation and Links
 
 For more documentation, see:
 
-    https://mimic.readthedocs.org/en/latest/
+https://mimic.readthedocs.org/en/latest/
 
 For more information, see:
 
-    https://github.com/gmcquillan/mimic
+https://github.com/gmcquillan/mimic
 
 To see information about the project that Mimic is forked from, see:
 
-    http://code.google.com/p/pymox/
+http://code.google.com/p/pymox/
 
 The Mox user and developer discussion group is:
 
-  http://groups.google.com/group/mox-discuss
+http://groups.google.com/group/mox-discuss
 
 Mox/Mimic is Copyright 2008 Google Inc, and licensed under the Apache
 License, Version 2.0; see the file COPYING for details.  If you would
