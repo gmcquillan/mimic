@@ -59,14 +59,17 @@ Getting Started
 Installing
 ^^^^^^^^^^
 
-You can download mimic from pypi using pip or easy_install:
+You can download mimic from `PyPI`_ using `pip`_ or easy_install:
 
-``pip install mimc``
+.. sourcecode:: bash
 
+   pip install mimc
 
 
 Source Code and Issue Tracker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The sourcecode is available on github at 
-`https://github.com/gmcquillan/mimic/ <https://github.com/gmcquillan/mimic/>`_.
+The sourcecode is available on github at https://github.com/gmcquillan/mimic/.
+
+.. _PyPI: https://pypi.python.org/
+.. _pip: http://www.pip-installer.org/
