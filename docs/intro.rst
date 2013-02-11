@@ -63,7 +63,7 @@ You can download mimic from `PyPI`_ using `pip`_ or easy_install:
 
 .. sourcecode:: bash
 
-   pip install mimc
+   pip install mimic
 
 
 Source Code and Issue Tracker
