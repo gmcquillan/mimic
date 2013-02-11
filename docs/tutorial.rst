@@ -14,8 +14,9 @@ the part where you put your mocks into replay mode and call your code like norma
 
 
 .. note::
-    The pymox project also has 
-    `very decent documentation <https://code.google.com/p/pymox/wiki/MoxDocumentation>`_
+    The pymox project also has `decent documentation`_.
+
+.. _decent documentation: https://code.google.com/p/pymox/wiki/MoxDocumentation
 
 Basics
 ------
@@ -40,13 +41,20 @@ In many examples, you might see a situation like this:
     from mimic import Mimic
     mime = Mimic()
 
-Often this will happen in a test classes ``SetUp`` function. But! you can save
-yourself the trouble by having your test class inherit from ``mimic.MimicTestBase``!
+Often this will happen in a test classes ``setUp`` method. However, you can save
+yourself the trouble by having your test class inherit from ``mimic.MimicTestBase``:
 
 When you do this, you get a ``self.mimic`` instance for free. However, that's
 not the only reason to do so. The other advantage is that the "Unsetting stubs"
-step will be done automatically at the end of each test_functon (more on this later);
-together this step saves a lot of boiler plate.
+step will be done automatically at the end of each test method
+(:ref:`more on this later <unsetting-stubs-verification>`).
+
+.. sourcecode:: python
+
+   class MyTests(mimc.MimicTestBase):
+
+       def test_something(self):
+           self.mimic.stub_out_with_mock(...)
 
 
 Mocking Out Objects
@@ -73,7 +81,7 @@ In situations where you need to access attributes and call functions on an objec
 
 .. sourcecode:: python
 
-    my_module =  self.mimic.create_mock_anything()
+    my_module = self.mimic.create_mock_anything()
     my_module.my_func(mimic.ignore_arg()).and_return('Completed')
 
 Mocking Out A Class
@@ -94,9 +102,12 @@ make our calls for testing now.
 
     # Set expectations
     self.mimic.replay_all()
+
     # Call your code
     # Make your assertions
     self.assertTrue(my_func())
+
+.. _unsetting-stubs-verification:
 
 Unsetting Stubs/Verification
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
