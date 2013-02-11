@@ -46,7 +46,8 @@ yourself the trouble by having your test class inherit from ``mimic.MimicTestBas
 
 When you do this, you get a ``self.mimic`` instance for free. However, that's
 not the only reason to do so. The other advantage is that the "Unsetting stubs"
-step will be done automatically at the end of each test method (:ref:`more on this later <unsetting-stubs-verification>`).
+step will be done automatically at the end of each test method
+(:ref:`more on this later <unsetting-stubs-verification>`).
 
 .. sourcecode:: python
 
